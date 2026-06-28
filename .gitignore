@@ -36,3 +36,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Lockfile is intentionally untracked: npm records native optional deps
+# (e.g. lightningcss) only for the host platform, which breaks Cloudflare's
+# Linux `npm ci`. Without a lockfile the builder runs `npm install` and
+# resolves the correct platform binaries.
+package-lock.json
