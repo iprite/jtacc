@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CheckCircle2, TrendingUp, Sparkles, MessageSquare, ShieldAlert, Cpu } from "lucide-react";
+import { CheckCircle2, TrendingUp, Sparkles, MessageSquare, Cpu } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/constants/translations";
 

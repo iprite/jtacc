@@ -3,6 +3,10 @@
 :root {
   --background: #0B0F19;
   --foreground: #F8FAFC;
+
+  /* Font families (loaded via Google Fonts <link> in Layout.astro) */
+  --font-noto-sans-thai: "Noto Sans Thai", sans-serif;
+  --font-geist-mono: "Geist Mono", monospace;
 }
 
 @theme {
@@ -87,7 +91,7 @@ body {
 }
 
 .line-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;

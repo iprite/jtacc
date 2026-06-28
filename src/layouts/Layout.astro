@@ -1,0 +1,46 @@
+---
+import "@/styles/globals.css";
+
+const title =
+  "jtacc | AI-First Accounting Firm for Modern Businesses | บริษัทบัญชี AI-First ยุคใหม่";
+const description =
+  "Automate 99% of bookkeeping, tax compliance, and financial intelligence with jtacc. Next-generation autonomous AI agents backed by expert human CPA oversight. / จัดการบัญชี ภาษี และวิเคราะห์การเงินอัตโนมัติด้วย AI และผู้สอบบัญชี CPA";
+---
+
+<!doctype html>
+<html lang="en" class="h-full antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="AI accounting, automated bookkeeping, tax compliance AI, startup bookkeeping, autonomous financial agents, jtacc, บัญชี AI, ทำบัญชีอัตโนมัติ, ยื่นภาษีสตาร์ทอัพ, กรมสรรพากร"
+    />
+    <meta name="author" content="jtacc Inc." />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="jtacc | AI-First Accounting for Modern Businesses"
+    />
+    <meta
+      property="og:description"
+      content="Automate bookkeeping, tax compliance, and financial intelligence using autonomous AI agents with expert human review."
+    />
+
+    <!-- Fonts: Noto Sans Thai + Geist Mono (replaces next/font/google) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-full flex flex-col">
+    <slot />
+  </body>
+</html>

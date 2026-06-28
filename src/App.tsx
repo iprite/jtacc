@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Navbar from "@/components/Navbar";
@@ -10,7 +8,9 @@ import Contact from "@/components/Contact";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+// Single React island for the whole page. Language state lives in React
+// Context, so the entire interactive tree is hydrated together.
+export default function App() {
   return (
     <LanguageProvider>
       <Navbar />

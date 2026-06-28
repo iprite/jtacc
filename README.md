@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# jtacc
+
+Bilingual (Thai / English) AI-First accounting firm landing page.
+
+Built with [Astro](https://astro.build), React islands, and Tailwind CSS v4.
+Deployed as a static site to [Cloudflare Pages](https://pages.cloudflare.com).
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:4321](http://localhost:4321).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command           | Action                                          |
+| ----------------- | ----------------------------------------------- |
+| `npm run dev`     | Start the local dev server                      |
+| `npm run build`   | Build the static site to `dist/`                |
+| `npm run preview` | Preview the production build locally            |
+| `npm run deploy`  | Build and deploy to Cloudflare Pages (wrangler) |
 
-## Learn More
+## Deploy to Cloudflare
 
-To learn more about Next.js, take a look at the following resources:
+**Option A — Wrangler (CLI):**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run deploy
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+First run will prompt `wrangler login` and create the `jtacc` Pages project.
 
-## Deploy on Vercel
+**Option B — Git integration:** connect this repo in the Cloudflare dashboard
+(Workers & Pages → Pages) with build command `npm run build` and output
+directory `dist`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [AGENTS.md](AGENTS.md) for architecture notes.
