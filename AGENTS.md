@@ -1,7 +1,8 @@
 # jtacc — bilingual AI-First accounting landing page
 
 Built with **Astro 5** + **React islands** + **Tailwind CSS v4**, deployed as a
-static site to **Cloudflare Pages**.
+static site to **Cloudflare** (Workers Static Assets — the Worker serves the
+`dist/` build directly; config in `wrangler.toml`).
 
 ## Architecture
 
@@ -23,4 +24,4 @@ static site to **Cloudflare Pages**.
 - `npm run dev` — local dev server.
 - `npm run build` — static build to `dist/`.
 - `npm run preview` — serve the built site.
-- `npm run deploy` — build + `wrangler pages deploy dist`.
+- `npm run deploy` — build + `wrangler deploy` (Workers Static Assets).
