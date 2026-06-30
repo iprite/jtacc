@@ -1,27 +1,40 @@
 # jtacc — bilingual AI-First accounting landing page
 
-Built with **Astro 5** + **React islands** + **Tailwind CSS v4**, deployed as a
+Built with **Astro 7 (pure, no UI framework)** + **Tailwind CSS v4**, deployed as a
 static site to **Cloudflare** (Workers Static Assets — the Worker serves the
 `dist/` build directly; config in `wrangler.toml`).
 
+> Follows the house standard in [`../_standard/FRAMEWORK.md`](../_standard/FRAMEWORK.md)
+> (page sites = Astro 7 + TW4 + Cloudflare) and [`../_standard/DESIGN.md`](../_standard/DESIGN.md).
+
 ## Architecture
 
-- `src/pages/index.astro` — the only route; renders `<App client:load />` inside `Layout.astro`.
-- `src/layouts/Layout.astro` — `<html>` shell: SEO meta, Open Graph, Google Fonts (Noto Sans Thai + Geist Mono), imports `src/styles/globals.css`.
-- `src/App.tsx` — single React island wrapping the whole interactive tree.
-- `src/components/*.tsx` — plain React components (lucide-react icons, Tailwind classes).
-- `src/context/LanguageContext.tsx` — TH/EN language state (client-side: URL `?lang=`, localStorage, navigator). This is why the page is one hydrated island rather than `.astro` partials.
-- `src/constants/translations.ts` — all TH/EN copy.
+- **i18n = route-based** (`/th`, `/en`) via Astro's `i18n` config (`defaultLocale: "th"`,
+  `prefixDefaultLocale: true`). Root `/` redirects to `/th` (`redirects` in `astro.config.mjs`).
+- `src/pages/[lang]/index.astro` — single dynamic route, `getStaticPaths` emits `th` + `en`;
+  passes `lang` to every section component.
+- `src/layouts/Layout.astro` — `<html lang={lang}>` shell: SEO meta, Open Graph, Google Fonts
+  (Noto Sans Thai + Geist Mono), imports `src/styles/globals.css`.
+- `src/components/*.astro` — pure Astro section components, each takes a `lang` prop and reads
+  copy from `translations[lang]`. Interactivity (navbar scroll/mobile menu, contact form,
+  dashboard demo) is plain vanilla `<script>` — no React, no hydration directives.
+- `src/components/Icon.astro` — inline lucide SVGs by `name` (replaces `lucide-react`).
+- `src/constants/translations.ts` — all TH/EN copy (consumed server-side per route).
 
 ## Conventions
 
 - Path alias `@/*` → `src/*`.
-- Tailwind v4 is configured via the Vite plugin (`@tailwindcss/vite`) in `astro.config.mjs`; theme/animations live in `@theme` inside `globals.css` — no `tailwind.config`.
-- Keep language state in React Context; all components read it via `useLanguage()`.
+- Tailwind v4 via the Vite plugin (`@tailwindcss/vite`); theme/animations live in `@theme`
+  inside `globals.css` — no `tailwind.config`.
+- **No React.** Language comes from the route (`lang` prop), not client state. Add a new
+  string to `translations.ts` (both `th` and `en`) and read it via the component's `lang` prop.
+- Icons: add the path to `Icon.astro`'s map and use `<Icon name="..." />`.
+- Interactive widgets: one bundled `<script>` per component that wires `[data-*]` hooks.
 
 ## Commands
 
-- `npm run dev` — local dev server.
-- `npm run build` — static build to `dist/`.
+- `npm run dev` — local dev server (port 3101).
+- `npm run build` — static build to `dist/` (emits `/th`, `/en`, `/` redirect).
+- `npm run check` — `astro check` (types).
 - `npm run preview` — serve the built site.
 - `npm run deploy` — build + `wrangler deploy` (Workers Static Assets).

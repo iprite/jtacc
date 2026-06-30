@@ -1,0 +1,28 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Hero from "@/components/Hero.astro";
+import BentoGrid from "@/components/BentoGrid.astro";
+import Integrations from "@/components/Integrations.astro";
+import Contact from "@/components/Contact.astro";
+import Testimonials from "@/components/Testimonials.astro";
+import Footer from "@/components/Footer.astro";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "th" } }, { params: { lang: "en" } }];
+}
+
+const { lang } = Astro.params as { lang: "th" | "en" };
+---
+
+<Layout lang={lang}>
+  <Navbar lang={lang} />
+  <main class="bg-obsidian font-sans w-full flex-1 text-slate-100">
+    <Hero lang={lang} />
+    <BentoGrid lang={lang} />
+    <Integrations lang={lang} />
+    <Contact lang={lang} />
+    <Testimonials lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

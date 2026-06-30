@@ -1,0 +1,72 @@
+---
+import Icon from "@/components/Icon.astro";
+import { translations } from "@/constants/translations";
+
+type Lang = "th" | "en";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translations[lang];
+
+const TESTIMONIALS = {
+  th: [
+    { quote: "ก่อนหน้านี้ บัญชีบริษัทต้องเสียเวลาเดือนละกว่า 15 ชั่วโมงในการทำเอกสารและกระทบยอดเงินสด ตอนนี้ทุกอย่างเกิดขึ้นอัตโนมัติในพื้นหลังพร้อมการรับรองความถูกต้องจาก CPA มืออาชีพ ความเร็วของระบบน่าทึ่งมาก", author: "คุณณัฐภรณ์ ส.", role: "ประธานเจ้าหน้าที่บริหาร & ผู้ร่วมก่อตั้ง", company: "Lumina Paytech", avatar: "ณส", rating: 5 },
+    { quote: "ที่ปรึกษา AI ตอบคำถามภาษีและวิเคราะห์ความปลอดภัยทางการเงินได้เร็วมาก ผมถามเรื่องค่าภาษีสะสมแล้วได้รับรายงาน PDF ออกมาใน 10 วินาที เหมือนมี CFO ส่วนตัวอยู่ใน Slack ตลอด 24 ชั่วโมง", author: "คุณวรุตม์ ก.", role: "ผู้ก่อตั้ง", company: "Siam Logistics AI", avatar: "วก", rating: 5 },
+    { quote: "งานภาษีและ e-tax invoice เคยเป็นเรื่องปวดหัวสำหรับทีมเรา jtacc เชื่อมข้อมูลการรับชำระเงินของ Stripe ตรงเข้ากับฐานระบบของกรมสรรพากรโดยตรง รวดเร็ว ปลอดภัย และไร้ข้อผิดพลาด", author: "คุณโชติกา พ.", role: "ผู้อำนวยการฝ่ายปฏิบัติการ", company: "OmniChannel SG", avatar: "ชพ", rating: 5 },
+    { quote: "การรับประกันความถูกต้องโดยผู้ตรวจสอบบัญชีรับอนุญาต (CPA) ช่วยให้เรามั่นใจและโอนบัญชีทั้งหมดมาใช้ jtacc ความรวดเร็วในการประมวลผลด้วย AI และการคุ้มครองตามเกณฑ์กฎหมายคือสิ่งที่ดีที่สุด", author: "คุณปฏิภาณ ม.", role: "ผู้ก่อตั้งร่วม", company: "FinVerse Studio", avatar: "ปม", rating: 5 },
+  ],
+  en: [
+    { quote: "Before jtacc, our bookkeeping took 15 hours a month of manual export. Now, it happens continuously in the background, checked by a certified CPA. The speed is unbelievable.", author: "Nattaporn S.", role: "CEO & Co-founder", company: "Lumina Paytech", avatar: "NS", rating: 5 },
+    { quote: "The AI Chat advisor is a game-changer. I asked about our tax liabilities and got a detailed PDF breakdown ready for filing in 10 seconds. It feels like having a CFO on Slack 24/7.", author: "Warut K.", role: "Founder", company: "Siam Logistics AI", avatar: "WK", rating: 5 },
+    { quote: "Tax compliance and e-tax invoices were a mess for our team. jtacc synchronized our stripe payments with the Revenue Department (กรมสรรพากร) instantly. No manual errors.", author: "Chotika P.", role: "Head of Operations", company: "OmniChannel SG", avatar: "CP", rating: 5 },
+    { quote: "The Human-in-the-loop guarantee gave us the confidence to switch from a traditional firm. The speed of AI matched with CPA liability protection is the perfect combination.", author: "Patiphan M.", role: "Co-Founder", company: "FinVerse Studio", avatar: "PM", rating: 5 },
+  ],
+} as const;
+
+const list = TESTIMONIALS[lang];
+---
+
+<section id="about" class="relative overflow-hidden border-t border-white/5 bg-[#090d16]/20 py-20">
+  <div class="bg-neon-purple/5 absolute bottom-0 right-1/4 -z-10 h-[300px] w-[500px] -translate-y-1/2 rounded-full blur-[90px]"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto mb-16 max-w-3xl text-center">
+      <h2 class="text-neon-cyan animate-pulse-slow flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-widest">
+        <Icon name="sparkles" class="h-4 w-4" /> {t.testimonials.pill}
+      </h2>
+      <p class="mt-4 text-3xl font-extrabold text-white sm:text-4xl">{t.testimonials.title}</p>
+      <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">{t.testimonials.desc}</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {
+        list.map((item) => (
+          <div class="glassmorphism glassmorphism-hover flex flex-col justify-between rounded-2xl p-6">
+            <div>
+              <div class="mb-4 flex items-center gap-1">
+                {Array.from({ length: item.rating }).map(() => (
+                  <Icon name="star" class="fill-neon-cyan text-neon-cyan h-3.5 w-3.5" />
+                ))}
+              </div>
+              <p class="text-sm italic leading-relaxed text-slate-300">"{item.quote}"</p>
+            </div>
+            <div class="mt-6 flex items-center gap-3 border-t border-white/5 pt-4">
+              <div class="from-neon-blue to-neon-purple flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr p-[1px]">
+                <div class="bg-obsidian flex h-full w-full items-center justify-center rounded-full text-xs font-bold text-slate-200">
+                  {item.avatar}
+                </div>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-white">{item.author}</p>
+                <p class="text-[10px] text-slate-400">
+                  {item.role}, <span class="text-neon-cyan font-medium">{item.company}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
