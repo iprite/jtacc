@@ -1,0 +1,160 @@
+---
+import Icon from "@/components/Icon.astro";
+import { translations } from "@/constants/translations";
+
+type Lang = "th" | "en";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translations[lang];
+---
+
+<section id="features" class="relative overflow-hidden py-20 md:py-28">
+  <div class="bg-neon-blue/5 absolute top-1/2 left-1/4 -z-10 h-[400px] w-[400px] rounded-full blur-[100px]"></div>
+  <div class="bg-neon-purple/5 absolute bottom-0 right-1/4 -z-10 h-[300px] w-[500px] rounded-full blur-[90px]"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mb-16 max-w-3xl">
+      <h2 class="text-neon-cyan animate-pulse-slow flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest">
+        <Icon name="sparkles" class="h-4 w-4" /> {t.bento.pill}
+      </h2>
+      <p class="mt-4 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">{t.bento.sectionTitle}</p>
+      <p class="mt-4 text-base leading-relaxed text-slate-400 md:text-lg">{t.bento.sectionDesc}</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Card 1 */}
+      <div class="glassmorphism glassmorphism-hover group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 md:col-span-2">
+        <div class="via-neon-cyan animate-scan absolute top-0 right-0 left-0 h-[1.5px] bg-gradient-to-r from-transparent to-transparent"></div>
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+              <Icon name="refresh-ccw" class="h-5 w-5 animate-spin" style="animation-duration:8s" />
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">{t.bento.card1Title}</h3>
+              <p class="text-xs text-slate-400">{t.bento.card1Subtitle}</p>
+            </div>
+          </div>
+          <p class="mt-4 max-w-xl text-sm leading-relaxed text-slate-300">{t.bento.card1Desc}</p>
+        </div>
+        <div class="mt-8 space-y-3 rounded-xl border border-white/5 bg-black/40 p-4">
+          <div class="flex items-center justify-between border-b border-white/5 pb-2 text-[11px] text-slate-400">
+            <span>{t.bento.card1Feed}</span>
+            <span class="text-neon-cyan flex items-center gap-1 font-mono">
+              <span class="bg-neon-cyan h-1.5 w-1.5 animate-ping rounded-full"></span>{t.bento.card1Listening}
+            </span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="rounded border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-slate-300">Bank Debit</span>
+                <span class="text-xs text-slate-200">GCP Cloud Compute</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-200">-$342.10</span>
+                <span class="bg-neon-cyan/15 text-neon-cyan rounded px-1.5 py-0.5 font-mono text-[10px]">Matched to Hosting</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="rounded border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-slate-300">Stripe Payout</span>
+                <span class="text-xs text-slate-200">Weekly Customer Payout</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-200">+$24,590.00</span>
+                <span class="bg-neon-cyan/15 text-neon-cyan rounded px-1.5 py-0.5 font-mono text-[10px]">Matched to Sales</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 2 */}
+      <div class="glassmorphism glassmorphism-hover group flex flex-col justify-between rounded-2xl p-6">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="bg-neon-blue/10 text-neon-blue border-neon-blue/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+              <Icon name="line-chart" class="h-5 w-5" />
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">{t.bento.card2Title}</h3>
+              <p class="text-xs text-slate-400">{t.bento.card2Subtitle}</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-slate-300">{t.bento.card2Desc}</p>
+        </div>
+        <div class="from-neon-blue/5 to-neon-cyan/5 mt-6 rounded-xl border border-white/5 bg-gradient-to-br p-4">
+          <div class="mb-3 flex items-center justify-between text-xs">
+            <span class="text-slate-400">{t.bento.card2Savings}</span>
+            <span class="text-neon-cyan font-bold">+$12,480.00</span>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <div class="mb-1 flex justify-between text-[10px] text-slate-400">
+                <span>{t.bento.card2Threshold}</span><span>84%</span>
+              </div>
+              <div class="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+                <div class="from-neon-blue to-neon-cyan h-full rounded-full bg-gradient-to-r" style="width:84%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 3 */}
+      <div class="glassmorphism glassmorphism-hover group flex flex-col justify-between rounded-2xl p-6">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="bg-neon-purple/10 text-neon-purple border-neon-purple/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+              <Icon name="message-square" class="h-5 w-5" />
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">{t.bento.card3Title}</h3>
+              <p class="text-xs text-slate-400">{t.bento.card3Subtitle}</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-slate-300">{t.bento.card3Desc}</p>
+        </div>
+        <div class="mt-6 space-y-2 rounded-xl border border-white/5 bg-black/40 p-3.5 text-xs">
+          <div class="italic text-slate-400">{t.bento.card3Prompt}</div>
+          <div class="text-neon-cyan border-neon-cyan/30 border-l pl-2 font-medium leading-relaxed">{t.bento.card3Reply}</div>
+        </div>
+      </div>
+
+      {/* Card 4 */}
+      <div class="glassmorphism glassmorphism-hover group flex flex-col justify-between rounded-2xl p-6 md:col-span-2">
+        <div>
+          <div class="flex items-center gap-3">
+            <div class="bg-neon-indigo/10 text-neon-indigo border-neon-indigo/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+              <Icon name="shield-check" class="h-5 w-5" />
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">{t.bento.card4Title}</h3>
+              <p class="text-xs text-slate-400">{t.bento.card4Subtitle}</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-slate-300">{t.bento.card4Desc}</p>
+        </div>
+        <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {
+            [
+              [t.bento.card4Check1Title, t.bento.card4Check1Desc],
+              [t.bento.card4Check2Title, t.bento.card4Check2Desc],
+              [t.bento.card4Check3Title, t.bento.card4Check3Desc],
+            ].map(([title, desc]) => (
+              <div class="flex items-start gap-2 rounded-lg border border-white/5 bg-[#0f1424]/60 p-3">
+                <Icon name="check" class="text-neon-cyan mt-0.5 h-4 w-4 shrink-0" />
+                <div class="text-[11px] leading-relaxed">
+                  <span class="block font-semibold text-slate-200">{title}</span>
+                  <span class="text-[10px] text-slate-400">{desc}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

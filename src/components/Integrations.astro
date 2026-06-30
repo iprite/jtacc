@@ -1,0 +1,77 @@
+---
+import Icon from "@/components/Icon.astro";
+import { translations } from "@/constants/translations";
+
+type Lang = "th" | "en";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translations[lang];
+
+const LIST_1 = [
+  { name: "Stripe", cat: "globalPayouts", icon: "credit-card", color: "text-indigo-400" },
+  { name: "Plaid", cat: "bankConnection", icon: "landmark", color: "text-emerald-400" },
+  { name: "กรมสรรพากร API", cat: "revenueDept", icon: "file-text", color: "text-neon-cyan" },
+  { name: "Kasikorn Bank", cat: "directBank", icon: "landmark", color: "text-green-500" },
+  { name: "Shopify", cat: "ecommerce", icon: "shopping-bag", color: "text-lime-400" },
+  { name: "Siam Commercial Bank", cat: "directBank", icon: "landmark", color: "text-purple-500" },
+] as const;
+
+const LIST_2 = [
+  { name: "AWS Billing", cat: "infraCost", icon: "database", color: "text-amber-500" },
+  { name: "E-Tax Invoice", cat: "compliance", icon: "file-text", color: "text-cyan-400" },
+  { name: "OpenAI Platform", cat: "usageMetrics", icon: "database", color: "text-sky-400" },
+  { name: "Bangkok Bank", cat: "directBank", icon: "landmark", color: "text-blue-500" },
+  { name: "Wise", cat: "crossBorder", icon: "dollar-sign", color: "text-teal-400" },
+  { name: "Revenue Department", cat: "officialGateway", icon: "file-text", color: "text-neon-cyan" },
+] as const;
+
+const ti = t.integrations as Record<string, string>;
+---
+
+<section id="integrations" class="relative overflow-hidden border-y border-white/5 bg-[#090d16]/30 py-20">
+  <div class="bg-neon-cyan/5 absolute top-1/2 left-1/2 -z-10 h-[250px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto mb-16 max-w-3xl text-center">
+      <h2 class="text-neon-cyan text-xs font-bold uppercase tracking-widest">{t.integrations.pill}</h2>
+      <p class="mt-4 text-3xl font-extrabold text-white sm:text-4xl">{t.integrations.title}</p>
+      <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">{t.integrations.desc}</p>
+    </div>
+  </div>
+
+  <div class="flex w-full flex-col gap-6 overflow-hidden">
+    <div class="animate-marquee flex w-[200%] gap-6">
+      {
+        [...LIST_1, ...LIST_1].map((item) => (
+          <div class="hover:border-neon-cyan/30 bg-obsidian-light/40 flex w-[280px] shrink-0 items-center gap-4 rounded-xl border border-white/5 p-4 backdrop-blur-md transition-colors">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5">
+              <Icon name={item.icon} class={`h-5 w-5 ${item.color}`} />
+            </div>
+            <div class="overflow-hidden">
+              <p class="truncate text-sm font-bold text-white">{item.name}</p>
+              <p class="truncate text-[10px] text-slate-400">{ti[item.cat]}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="animate-marquee-reverse flex w-[200%] gap-6">
+      {
+        [...LIST_2, ...LIST_2].map((item) => (
+          <div class="hover:border-neon-blue/30 bg-obsidian-light/40 flex w-[280px] shrink-0 items-center gap-4 rounded-xl border border-white/5 p-4 backdrop-blur-md transition-colors">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5">
+              <Icon name={item.icon} class={`h-5 w-5 ${item.color}`} />
+            </div>
+            <div class="overflow-hidden">
+              <p class="truncate text-sm font-bold text-white">{item.name}</p>
+              <p class="truncate text-[10px] text-slate-400">{ti[item.cat]}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

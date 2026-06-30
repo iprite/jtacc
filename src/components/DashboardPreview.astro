@@ -1,0 +1,387 @@
+---
+import Icon from "@/components/Icon.astro";
+import { translations } from "@/constants/translations";
+
+type Lang = "th" | "en";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = translations[lang];
+const d = t.dashboard;
+
+type Status = "CPA Approved" | "AI Matched" | "Pending";
+const cat = (th: string, en: string) => (lang === "th" ? th : en);
+
+const initialTx = [
+  { merchant: "Stripe Transfer", amount: "+$12,450.00", category: cat("รายได้", "Revenue"), status: "CPA Approved" as Status, confidence: 100 },
+  { merchant: "AWS Cloud Infrastructure", amount: "-$1,240.50", category: cat("คลาวด์เซิร์ฟเวอร์", "Hosting"), status: "AI Matched" as Status, confidence: 99 },
+  { merchant: "Google Workspace Office", amount: "-$120.00", category: cat("ซอฟต์แวร์", "Software"), status: "AI Matched" as Status, confidence: 98 },
+  { merchant: "Facebook Ads Inc.", amount: "-$3,500.00", category: cat("การตลาด", "Marketing"), status: "Pending" as Status, confidence: 85 },
+];
+const merchants = [
+  { merchant: "OpenAI API Fees", amount: "-$842.20", category: cat("ปัญญาประดิษฐ์", "AI Compute"), status: "AI Matched" as Status, confidence: 99 },
+  { merchant: "GitHub Enterprise", amount: "-$450.00", category: cat("เครื่องมือพัฒนา", "Software"), status: "AI Matched" as Status, confidence: 97 },
+  { merchant: "Figma Professional", amount: "-$96.00", category: cat("การออกแบบ", "Design Tools"), status: "AI Matched" as Status, confidence: 99 },
+  { merchant: "Customer Receipt #1092", amount: "+$4,800.00", category: cat("รายได้", "Revenue"), status: "AI Matched" as Status, confidence: 96 },
+];
+
+function statusMeta(status: Status) {
+  if (status === "CPA Approved") return { text: d.cpaApproved, color: "text-emerald-400" };
+  if (status === "AI Matched") return { text: d.matched, color: "text-neon-cyan" };
+  return { text: "Pending", color: "text-yellow-500" };
+}
+
+const config = {
+  status: { idle: d.statusIdle, auditing: d.statusAuditing, reconciled: d.statusReconciled, analyzing: d.statusAnalyzing },
+  matched: d.matched,
+  cpaApproved: d.cpaApproved,
+  replies: { tax: d.chatReplyTax, cash: d.chatReplyCash, default: d.chatReplyDefault },
+  initialTx,
+  merchants,
+};
+---
+
+<div data-dashboard class="bg-obsidian-light/60 relative mx-auto mt-16 w-full max-w-5xl rounded-2xl border border-white/10 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+  <div class="from-neon-cyan/20 via-neon-indigo/30 to-neon-purple/20 absolute -inset-px -z-10 rounded-[18px] bg-gradient-to-r opacity-70"></div>
+
+  <div class="overflow-hidden rounded-[14px] border border-white/5 bg-[#0c101c]">
+    {/* Top control bar */}
+    <div class="flex flex-col items-stretch justify-between gap-2 border-b border-white/5 bg-[#090d16] px-4 py-3 sm:flex-row sm:items-center">
+      <div class="flex items-center gap-3">
+        <div class="flex gap-1.5">
+          <span class="h-3 w-3 rounded-full bg-red-500/80"></span>
+          <span class="h-3 w-3 rounded-full bg-yellow-500/80"></span>
+          <span class="h-3 w-3 rounded-full bg-green-500/80"></span>
+        </div>
+        <div class="h-4 w-px bg-white/10"></div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <Icon name="cpu" class="h-3.5 w-3.5 text-slate-400" data-cpu />
+          {d.agentStatus}
+          <span class="font-semibold text-slate-300" data-agent-status>{d.statusIdle}</span>
+        </div>
+      </div>
+
+      <div class="flex rounded-lg border border-white/5 bg-[#0f1424] p-0.5">
+        {
+          [
+            ["cashflow", d.tabCashflow],
+            ["ledger", d.tabLedger],
+            ["chat", d.tabAdvisor],
+          ].map(([key, lbl], i) => (
+            <button
+              type="button"
+              data-tab={key}
+              class:list={[
+                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                i === 0 ? "from-neon-blue to-neon-cyan bg-gradient-to-r text-white shadow-md" : "text-slate-400 hover:text-white",
+              ]}
+            >
+              {lbl}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    {/* Content */}
+    <div class="grid min-h-[380px] grid-cols-1 lg:grid-cols-12">
+      <div class="flex flex-col justify-between border-b border-white/5 p-6 lg:col-span-8 lg:border-b-0 lg:border-r">
+        {/* Cashflow panel */}
+        <div data-panel="cashflow" class="flex h-full flex-col justify-between">
+          <div>
+            <div class="mb-6 flex items-start justify-between">
+              <div>
+                <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400">{d.operatingBalance}</h4>
+                <p class="mt-1 text-3xl font-bold text-white">$245,000.00</p>
+              </div>
+              <div class="flex items-center gap-1 rounded-full border border-green-500/20 bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
+                <Icon name="trending-up" class="h-3 w-3" />{d.momGrowth}
+              </div>
+            </div>
+            <div class="relative mt-4 h-44 w-full">
+              <svg viewBox="0 0 400 120" class="h-full w-full overflow-visible">
+                <defs>
+                  <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.25"></stop>
+                    <stop offset="100%" stop-color="#00F0FF" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#3B82F6"></stop>
+                    <stop offset="100%" stop-color="#00F0FF"></stop>
+                  </linearGradient>
+                </defs>
+                <line x1="0" y1="20" x2="400" y2="20" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line>
+                <line x1="0" y1="60" x2="400" y2="60" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line>
+                <line x1="0" y1="100" x2="400" y2="100" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line>
+                <path d="M0 100 Q 50 85, 100 90 T 200 45 T 300 35 T 400 15 L 400 120 L 0 120 Z" fill="url(#chartGlow)"></path>
+                <path d="M0 100 Q 50 85, 100 90 T 200 45 T 300 35 T 400 15" fill="none" stroke="url(#lineGradient)" stroke-width="3.5" stroke-linecap="round" class="animate-pulse"></path>
+                <circle cx="400" cy="15" r="4.5" fill="#00F0FF" class="animate-ping"></circle>
+                <circle cx="400" cy="15" r="3" fill="#ffffff"></circle>
+              </svg>
+            </div>
+          </div>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400">{d.monthlyBurn}</span>
+              <p class="mt-0.5 text-sm font-semibold text-white">$18,450.00</p>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400">{d.runway}</span>
+              <p class="text-neon-cyan mt-0.5 text-sm font-semibold">13.2 {t.common.months}</p>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-400">{d.unmatched}</span>
+              <p class="mt-0.5 text-sm font-semibold text-white">{d.unmatchedItem}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Ledger panel */}
+        <div data-panel="ledger" class="hidden h-full flex-col justify-between">
+          <div>
+            <div class="mb-4 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-white">{d.ledgerTitle}</h4>
+                <p class="text-xs text-slate-400">{d.ledgerSubtitle}</p>
+              </div>
+              <Icon name="sparkles" class="text-neon-cyan h-4 w-4 animate-pulse" />
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between rounded-lg border border-white/5 bg-white/5 p-3">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-8 w-8 items-center justify-center rounded bg-[#10b981]/15 text-xs font-bold text-[#10b981]">ET</div>
+                  <div>
+                    <p class="text-xs font-semibold text-slate-200">{d.etaxTitle}</p>
+                    <p class="text-[10px] text-slate-400">{d.etaxDoc}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs font-semibold text-white">+$3,450.00</p>
+                  <span class="rounded border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[9px] text-emerald-400">{d.matched} (99%)</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between rounded-lg border border-white/5 bg-white/5 p-3">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-8 w-8 items-center justify-center rounded bg-[#3b82f6]/15 text-xs font-bold text-[#3b82f6]">SP</div>
+                  <div>
+                    <p class="text-xs font-semibold text-slate-200">{d.stripeTitle}</p>
+                    <p class="text-[10px] text-slate-400">{d.stripeDesc}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs font-semibold text-white">+$12,450.00</p>
+                  <span class="rounded border border-emerald-500/20 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[9px] text-emerald-400">{d.cpaApproved}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-xs text-slate-400">
+            <span>{d.reconciliationCycle}</span>
+            <a href="#features" class="text-neon-cyan font-medium hover:underline" set:html={d.configureRules}></a>
+          </div>
+        </div>
+
+        {/* Chat panel */}
+        <div data-panel="chat" class="hidden h-full flex-col justify-between">
+          <div>
+            <h4 class="mb-2 text-sm font-bold text-white">{d.chatTitle}</h4>
+            <p class="mb-4 text-xs text-slate-400">{d.chatSubtitle}</p>
+          </div>
+          <div data-chat-log class="no-scrollbar mb-4 max-h-[220px] space-y-4 overflow-y-auto">
+            <div class="flex justify-end">
+              <div class="max-w-[85%] rounded-lg rounded-br-none border border-white/5 bg-[#18233C] p-2.5 text-xs leading-relaxed text-slate-100">{d.chatInitialUser}</div>
+            </div>
+            <div class="flex justify-start">
+              <div class="text-neon-cyan border-neon-cyan/20 max-w-[85%] rounded-lg rounded-bl-none border bg-[#090d16] p-2.5 text-xs leading-relaxed">{d.chatInitialAI}</div>
+            </div>
+          </div>
+          <form data-chat-form class="relative mt-2">
+            <input type="text" data-chat-input placeholder={d.chatPlaceholder} class="focus:border-neon-cyan focus:ring-neon-cyan w-full rounded-lg border border-white/10 bg-[#080b13] py-2.5 pl-3 pr-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1" />
+            <button type="submit" class="text-neon-cyan absolute right-2.5 top-3 transition-colors hover:text-white">
+              <Icon name="message-square" class="h-3.5 w-3.5" />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Right: live activity */}
+      <div class="flex flex-col justify-between bg-[#080c14]/40 p-6 lg:col-span-4">
+        <div>
+          <div class="mb-4 flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-white">{d.liveActivity}</span>
+            <span class="relative flex h-2 w-2">
+              <span class="bg-neon-cyan absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+              <span class="bg-neon-cyan relative inline-flex h-2 w-2 rounded-full"></span>
+            </span>
+          </div>
+          <div data-tx-list class="space-y-3.5">
+            {
+              initialTx.map((tx) => {
+                const m = statusMeta(tx.status);
+                return (
+                  <div class="relative flex items-center justify-between border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                    <div class="flex flex-col">
+                      <span class="max-w-[130px] truncate text-xs font-medium text-slate-200">{tx.merchant}</span>
+                      <span class="text-[10px] text-slate-500">{tx.category}</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="block text-xs font-semibold text-slate-200">{tx.amount}</span>
+                      <div class="mt-0.5 flex items-center justify-end gap-1">
+                        <span class={`font-mono text-[9px] ${m.color}`}>{m.text} ({tx.confidence}%)</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-lg border border-white/10 bg-[#0f1526]/80 p-3">
+          <div class="flex items-center gap-2.5">
+            <div class="from-neon-blue to-neon-purple flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r p-[1px]">
+              <div class="bg-obsidian flex h-full w-full items-center justify-center rounded-full text-[9px] font-bold text-white">CPA</div>
+            </div>
+            <div class="flex-1">
+              <p class="text-[10px] font-semibold text-slate-200">{d.cpaVerified}</p>
+              <p class="text-[9px] text-slate-400">{d.cpaName}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" data-dashboard-config set:html={JSON.stringify(config)} is:inline></script>
+
+<script>
+  type Status = "CPA Approved" | "AI Matched" | "Pending";
+  interface Tx { merchant: string; amount: string; category: string; status: Status; confidence: number; }
+  interface Cfg {
+    status: { idle: string; auditing: string; reconciled: string; analyzing: string };
+    matched: string; cpaApproved: string;
+    replies: { tax: string; cash: string; default: string };
+    initialTx: Tx[]; merchants: Tx[];
+  }
+
+  const cfgEl = document.querySelector<HTMLElement>("[data-dashboard-config]");
+  const root = document.querySelector<HTMLElement>("[data-dashboard]");
+  if (cfgEl && root) {
+    const cfg = JSON.parse(cfgEl.textContent || "{}") as Cfg;
+
+    // Tabs
+    const tabs = root.querySelectorAll<HTMLButtonElement>("[data-tab]");
+    const panels = root.querySelectorAll<HTMLElement>("[data-panel]");
+    const TAB_ON = "from-neon-blue to-neon-cyan bg-gradient-to-r text-white shadow-md".split(" ");
+    function selectTab(key: string) {
+      tabs.forEach((b) => {
+        const on = b.dataset.tab === key;
+        TAB_ON.forEach((c) => b.classList.toggle(c, on));
+        b.classList.toggle("text-slate-400", !on);
+        b.classList.toggle("hover:text-white", !on);
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.panel === key;
+        p.classList.toggle("hidden", !on);
+        p.classList.toggle("flex", on);
+      });
+    }
+    tabs.forEach((b) => b.addEventListener("click", () => selectTab(b.dataset.tab || "cashflow")));
+
+    // Agent status + live transaction feed
+    const statusEl = root.querySelector<HTMLElement>("[data-agent-status]");
+    const cpu = root.querySelector<HTMLElement>("[data-cpu]");
+    const txList = root.querySelector<HTMLElement>("[data-tx-list]");
+    let transactions: Tx[] = cfg.initialTx.slice();
+
+    function setStatus(state: "idle" | "auditing" | "reconciled" | "analyzing") {
+      if (statusEl) statusEl.textContent = cfg.status[state];
+      const active = state !== "idle";
+      statusEl?.classList.toggle("text-neon-cyan", active);
+      statusEl?.classList.toggle("text-slate-300", !active);
+      cpu?.classList.toggle("text-neon-cyan", active);
+      cpu?.classList.toggle("animate-spin", active);
+      cpu?.classList.toggle("text-slate-400", !active);
+    }
+    function statusMeta(status: Status) {
+      if (status === "CPA Approved") return { text: cfg.cpaApproved, color: "text-emerald-400" };
+      if (status === "AI Matched") return { text: cfg.matched, color: "text-neon-cyan" };
+      return { text: "Pending", color: "text-yellow-500" };
+    }
+    function renderTx() {
+      if (!txList) return;
+      txList.innerHTML = transactions
+        .map((tx) => {
+          const m = statusMeta(tx.status);
+          return `<div class="relative flex items-center justify-between border-b border-white/5 pb-3 last:border-0 last:pb-0">
+            <div class="flex flex-col">
+              <span class="max-w-[130px] truncate text-xs font-medium text-slate-200">${tx.merchant}</span>
+              <span class="text-[10px] text-slate-500">${tx.category}</span>
+            </div>
+            <div class="text-right">
+              <span class="block text-xs font-semibold text-slate-200">${tx.amount}</span>
+              <div class="mt-0.5 flex items-center justify-end gap-1">
+                <span class="font-mono text-[9px] ${m.color}">${m.text} (${tx.confidence}%)</span>
+              </div>
+            </div>
+          </div>`;
+        })
+        .join("");
+    }
+
+    window.setInterval(() => {
+      setStatus("auditing");
+      window.setTimeout(() => {
+        const hasPending = transactions.some((tx) => tx.status === "Pending");
+        if (hasPending) {
+          transactions = transactions.map((tx) =>
+            tx.status === "Pending" ? { ...tx, status: "AI Matched" as Status, confidence: 97 } : tx,
+          );
+        } else {
+          const tmpl = cfg.merchants[Math.floor(Math.random() * cfg.merchants.length)];
+          transactions = [{ ...tmpl }, ...transactions.slice(0, 3)];
+        }
+        renderTx();
+        setStatus("reconciled");
+        window.setTimeout(() => setStatus("idle"), 1500);
+      }, 2000);
+    }, 8500);
+
+    // Chat
+    const chatForm = root.querySelector<HTMLFormElement>("[data-chat-form]");
+    const chatInput = root.querySelector<HTMLInputElement>("[data-chat-input]");
+    const chatLog = root.querySelector<HTMLElement>("[data-chat-log]");
+    function addBubble(sender: "user" | "ai", text: string) {
+      if (!chatLog) return;
+      const wrap = document.createElement("div");
+      wrap.className = `flex ${sender === "user" ? "justify-end" : "justify-start"}`;
+      const bubble = document.createElement("div");
+      bubble.className =
+        sender === "user"
+          ? "max-w-[85%] rounded-lg rounded-br-none border border-white/5 bg-[#18233C] p-2.5 text-xs leading-relaxed text-slate-100"
+          : "text-neon-cyan border-neon-cyan/20 max-w-[85%] rounded-lg rounded-bl-none border bg-[#090d16] p-2.5 text-xs leading-relaxed";
+      bubble.textContent = text;
+      wrap.appendChild(bubble);
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    chatForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const msg = chatInput?.value.trim();
+      if (!msg) return;
+      addBubble("user", msg);
+      if (chatInput) chatInput.value = "";
+      setStatus("analyzing");
+      const low = msg.toLowerCase();
+      let reply = cfg.replies.default;
+      if (low.includes("tax") || low.includes("save") || msg.includes("ภาษี") || msg.includes("ลดหย่อน")) reply = cfg.replies.tax;
+      else if (low.includes("cash") || low.includes("burn") || msg.includes("เงิน") || msg.includes("กระแสเงินสด")) reply = cfg.replies.cash;
+      window.setTimeout(() => {
+        addBubble("ai", reply);
+        setStatus("idle");
+      }, 1500);
+    });
+  }
+</script>
