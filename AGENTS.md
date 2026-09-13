@@ -38,3 +38,18 @@ static site to **Cloudflare** (Workers Static Assets — the Worker serves the
 - `npm run check` — `astro check` (types).
 - `npm run preview` — serve the built site.
 - `npm run deploy` — build + `wrangler deploy` (Workers Static Assets).
++
+## กติกา Git กลาง (บังคับใช้)
+
+ก่อนเริ่มงานใหม่ ให้รัน `git fetch --prune`.
+
+1. `main` เป็น branch หลักเพียง branch เดียว: ห้ามทำงานหรือ push ตรง
+2. งานหนึ่งเรื่องใช้หนึ่ง branch: `codex/<งาน>` หรือ `claude/<งาน>`
+3. ทุกงาน รวม hotfix ต้องเปิด PR ขนาดเล็กและจบในเรื่องเดียว
+4. ตรวจแบบ risk-based: อย่างน้อย pre-push/local checks ที่เกี่ยวข้องต้องผ่าน
+5. “PR ผ่าน” = ไม่มี conflict + checks ที่เกี่ยวข้องผ่าน + ผู้รับผิดชอบอนุมัติ; แล้ว merge ทันที
+6. หลัง merge ต้องลบ source branch ทั้ง remote และ local ทันที
+7. branch ที่ยังไม่ merge ห้ามค้างเกิน 7 วันโดยไม่มี owner และแผนชัดเจน
+8. clone ที่ไม่มี Husky ต้องเปิด pre-push guard ด้วย `git config core.hooksPath .husky`
+
+ไม่มี GitHub Actions สำหรับ CI/build/deploy ของแอป; ให้ยึด local/pre-push checks เป็นด่านคุณภาพ. GitHub Actions แบบ manual งาน VPS ไม่ใช่ CI.
