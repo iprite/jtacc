@@ -4,8 +4,8 @@ Built with **Astro 7 (pure, no UI framework)** + **Tailwind CSS v4**, deployed a
 static site to **Cloudflare** (Workers Static Assets — the Worker serves the
 `dist/` build directly; config in `wrangler.toml`).
 
-> Follows the house standard in [`../_standard/FRAMEWORK.md`](../_standard/FRAMEWORK.md)
-> (page sites = Astro 7 + TW4 + Cloudflare) and [`../_standard/DESIGN.md`](../_standard/DESIGN.md).
+> Follows the house standard in [`../_standard/docs/FRAMEWORK.md`](../_standard/docs/FRAMEWORK.md)
+> (page sites = Astro 7 + TW4 + Cloudflare) and [`../_standard/docs/DESIGN.md`](../_standard/docs/DESIGN.md).
 
 ## Architecture
 
