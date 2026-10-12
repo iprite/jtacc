@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jtacc",
+      "runtimeExecutable": "/Users/iprite/site/_standard/tools/dev-imac.sh",
+      "runtimeArgs": [
+        "3101",
+        ".",
+        "npm",
+        "run",
+        "dev"
+      ],
+      "port": 3101,
+      "autoPort": false
+    }
+  ]
+}
